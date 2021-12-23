@@ -1,0 +1,49 @@
+#buglist {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    .container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        table {
+            margin-top: 70px;
+            background-color: #384a60;
+            max-width: 80vw;
+            width: 100%;
+
+            border-radius: 10px;
+            padding: 20px;
+            thead {
+                background-color: white;
+
+                tr {
+                    th {
+                        border: 1px solid silver;
+                        background-color: silver;
+                        padding: 1%;
+                        &:first-child {
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+
+            tbody {
+                background-color: white;
+
+                tr {
+                    td {
+                        text-align: center;
+                        padding: 1%;
+                        &:first-child {
+                            text-align: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

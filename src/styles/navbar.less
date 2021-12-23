@@ -1,0 +1,99 @@
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    height: 8vh;
+    background-color: #384a60;
+    color: white;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+    padding: 0 3vw;
+    h1 {
+        width: max-content;
+        margin: 0;
+        padding: 0 5vw 0 0;
+        transition: 0.3s;
+        cursor: pointer;
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    & > div {
+        display: flex;
+        align-items: center;
+    }
+
+    .tag {
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        background-color: silver;
+        margin: 0 10px;
+        span {
+            color: #384a60;
+            padding: 8px 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        i {
+            font-weight: bold;
+            color: white;
+            padding: 10px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bugs {
+            background-color: red;
+        }
+        .todo {
+            background-color: orange;
+        }
+        .done {
+            background-color: green;
+        }
+    }
+
+    nav {
+        ul {
+            padding: 0 20px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            li {
+                list-style: none;
+                margin: 0 15px;
+                .logout {
+                    width: 32px;
+                    height: 32px;
+                    transition: 0.3s;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    background-image: url(../assets/logout-white.svg);
+                    cursor: pointer;
+                    &:hover {
+                        transform: scale(0.9);
+                        background-image: url(../assets/logout-red.svg);
+                    }
+                }
+                a {
+                    color: white;
+                    text-decoration: none;
+                    padding: 0 10px 5px 10px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    transition: 0.3s;
+                    &:hover {
+                        color: #3eaf7c;
+                    }
+                }
+
+                button {
+                    font-size: 1.2rem;
+                    padding: 13px 30px;
+                }
+            }
+        }
+    }
+}
