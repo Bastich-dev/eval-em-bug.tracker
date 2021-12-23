@@ -21,7 +21,7 @@
         <nav>
             <ul>
                 <li>
-                    <div class="logout"></div>
+                    <div class="logout" @click="logout"></div>
                 </li>
                 <li>
                     <router-link
@@ -56,6 +56,24 @@
         },
 
         methods: {
+            logout() {
+                if (window.confirm("Voulez vous vraiment vous déconnecter ?")) {
+                    $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/logout/${localStorage.getItem("token")}`)
+                        .then(res => {
+                            if (response.status === "failure") {
+                            } else {
+                                localStorage.setItem("token", response.token);
+                                this.$router.push("/");
+                            }
+                        })
+                        .catch(err => {
+                            this.error = "Erreur : " + err.status + ". Veuillez réessayer ulterieurement";
+                        });
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("username");
+                    this.$router.push("/");
+                }
+            },
             clickOnLogo() {
                 this.$router.push({ path: "/" });
             },

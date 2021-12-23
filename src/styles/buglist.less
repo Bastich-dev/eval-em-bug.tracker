@@ -9,7 +9,7 @@
         justify-content: center;
         align-items: flex-start;
         table {
-            margin-top: 70px;
+            margin: 70px 0;
             background-color: #384a60;
             max-width: 80vw;
             width: 100%;
@@ -26,6 +26,9 @@
                         &:first-child {
                             text-align: left;
                         }
+                        &:last-child {
+                            width: 100px;
+                        }
                     }
                 }
             }
@@ -39,12 +42,18 @@
                         padding: 1%;
                         &:first-child {
                             text-align: left;
+                            width: 60%;
                         }
                     }
 
                     .title {
+                        font-weight: bold;
+                        font-size: 1.1rem;
+                        line-height: 170%;
                     }
+
                     .description {
+                        font-style: italic;
                     }
                     .state {
                         select {

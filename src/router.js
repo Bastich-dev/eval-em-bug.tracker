@@ -66,21 +66,21 @@ const router = createRouter({
 
 // Vérifier l'authentification & Redirections
 router.beforeEach((to, from, next) => {
-    // if (localStorage.getItem("token")) {
-    //     if (to.path.includes("/edit-bug") || to.path.includes("/list-bugs")) {
-    //         next();
-    //     } else {
-    //         next({ path: "/edit-bug", replace: true });
-    //     }
-    // } else {
-    //     if (to.path.includes("/login") || to.path.includes("/signup")) {
-    //         next();
-    //     } else {
-    //         next({ path: "/login", replace: true });
-    //     }
-    // }
+    if (localStorage.getItem("token")) {
+        if (to.path.includes("/add-bug") || to.path.includes("/list-bugs")) {
+            next();
+        } else {
+            next({ path: "/add-bug", replace: true });
+        }
+    } else {
+        if (to.path.includes("/login") || to.path.includes("/signup")) {
+            next();
+        } else {
+            next({ path: "/login", replace: true });
+        }
+    }
 
-    next();
+    // next();
 });
 
 export default router;

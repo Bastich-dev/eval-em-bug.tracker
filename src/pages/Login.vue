@@ -38,7 +38,8 @@
             };
         },
         methods: {
-            submit() {
+            submit(e) {
+                e.preventDefault();
                 this.loading = true;
                 $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/login/${this.username}/${this.password}`)
                     .then(res => {
@@ -51,6 +52,8 @@
                             this.loading = false;
                         } else {
                             this.error = null;
+                            localStorage.setItem("token", response.token);
+                            localStorage.setItem("username", this.username);
                             this.$router.push("/");
                         }
                     })

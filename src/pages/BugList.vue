@@ -13,21 +13,29 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr v-if="bugs === null">
+                        <td colspan="5" style="text-align: center">
+                            <div class="spinner" />
+                        </td>
+                    </tr>
+                    <tr v-if="bugs?.length === 0">
+                        <td style="text-align: center" colspan="5">Aucun bug n'a été trouvé</td>
+                    </tr>
                     <tr v-for="bug in bugs">
                         <td>
                             <span class="title" v-text="bug.title" />
                             <br />
                             <span class="description" v-text="bug.description" />
                         </td>
-                        <td class="date" v-text="bug.date"></td>
-                        <td class="author" v-text="bug.author"></td>
+                        <td class="date" v-text="new Date(bug.timestamp).toLocaleDateString()"></td>
+                        <td class="author" v-text="users[bug.user_id]"></td>
                         <td class="state">
-                            <select v-model="bug.state" @change="changeState">
+                            <select v-model="bug.state" @change="changeState(bug.id)">
                                 <option v-for="state in statesValues" v-bind:value="state.value" v-text="state.label"></option>
                             </select>
                         </td>
                         <td class="delete">
-                            <div />
+                            <div @click="deleteBug(bug.id)" />
                         </td>
                     </tr>
                 </tbody>
@@ -44,65 +52,81 @@
     export default {
         data() {
             return {
-                initbugs: [
-                    {
-                        title: "titre",
-                        description: "description",
-                        date: "date",
-                        author: "author",
-                        state: "todo",
-                    },
-                    {
-                        title: "titre",
-                        description: "description",
-                        date: "date",
-                        author: "author",
-                        state: "todo",
-                    },
-                ],
+                initbugs: [],
                 statesValues: [
                     {
-                        value: "todo",
+                        value: "0",
                         label: "A traiter",
                     },
                     {
-                        value: "done",
+                        value: "1",
                         label: "Traité",
                     },
                     {
-                        value: "progress",
+                        value: "2",
                         label: "En cours",
                     },
                 ],
-                bugs: [],
+                bugs: null,
+                users: [],
+                user_id: null,
             };
         },
         methods: {
-            changeState: async () => {
-                console.log("changeState");
+            changeState(bug_id) {
+                const newValue = this.bugs.find(e => e.id === bug_id);
+                $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/state/${localStorage.getItem("token")}/${bug_id}/${newValue.state}`).then(
+                    res => {
+                        const response = JSON.parse(res).result;
+                        if (response.status === "failure") {
+                        } else {
+                        }
+                    }
+                );
             },
-            deleteBug: async () => {
-                console.log("changeState");
+            updateList() {
+                if (this.$route.fullPath.includes("todo")) {
+                    this.bugs = this.initbugs.filter(bug => bug.user_id === this.user_id);
+                } else {
+                    this.bugs = this.initbugs;
+                }
+            },
+            deleteBug(bug_id) {
+                if (window.confirm("Voulez vous vraiment supprimer ce bug ?")) {
+                    $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/delete/${localStorage.getItem("token")}/${bug_id}`).then(res => {
+                        const response = JSON.parse(res).result;
+                        if (response.status === "failure") {
+                        } else {
+                            this.initbugs = this.initbugs.filter(bug => bug.id !== bug_id);
+                            this.updateList();
+                        }
+                    });
+                }
             },
         },
         created() {
-            if (this.$route.fullPath.includes("todo")) {
-                this.bugs = this.initbugs.filter(bug => bug.author === this.$route.query.user);
-            } else {
-                this.bugs = this.initbugs;
-            }
+            $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/users/${localStorage.getItem("token")}`).then(res => {
+                const response = JSON.parse(res).result;
+                this.users = response.user;
+                this.user_id = response.user.findIndex(user => user === localStorage.getItem("username"));
+            });
+
+            $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/list/${localStorage.getItem("token")}/0`).then(res => {
+                const response = JSON.parse(res).result;
+                console.log(response.bug);
+                this.initbugs = response.bug;
+                this.updateList();
+            });
         },
+
         watch: {
             $route(to, from) {
                 const selector = document.querySelector("table")?.classList;
                 if (this && selector) {
                     selector.remove("fadeInUp");
                     setTimeout(() => {
-                        if (to.fullPath.includes("todo")) {
-                            this.bugs = this.initbugs.filter(bug => bug.author === to.query.user);
-                        } else {
-                            this.bugs = this.initbugs;
-                        }
+                        this.updateList();
+
                         selector.add("fadeInUp");
                     }, 100);
                 }

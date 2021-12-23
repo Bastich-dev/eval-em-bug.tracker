@@ -24,40 +24,44 @@
 </template>
 
 <script>
-import "../styles/login.less";
-export default {
-    data() {
-        return {
-            loginRoute: "/login",
-            loading: false,
-            username: "",
-            error: null,
-            // nameRules: [v => !!v || "Name is required", v => v.length <= 10 || "Name must be less than 10 characters"],
-            password: "",
-            password_verif: "",
-            // emailRules: [v => !!v || "E-mail is required", v => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || "E-mail must be valid"],
-        };
-    },
-    methods: {
-        submit() {
-            this.loading = true;
-            $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/signup/${this.username}/${this.password}`)
-                .then(res => {
-                    const response = JSON.parse(res).result;
-                    if (response.status === "failure") {
-                        this.password = "";
-                        this.error = response.message;
-                        this.loading = false;
-                    } else {
-                        this.error = null;
-                        localStorage.setItem("token", response.token);
-                    }
-                })
-                .catch(err => {
-                    this.error = "Erreur : " + err.status + ". Veuillez réessayer ulterieurement";
-                    this.loading = false;
-                });
+    import "../styles/login.less";
+    export default {
+        data() {
+            return {
+                loginRoute: "/login",
+                loading: false,
+                username: "",
+                error: null,
+                // nameRules: [v => !!v || "Name is required", v => v.length <= 10 || "Name must be less than 10 characters"],
+                password: "",
+                password_verif: "",
+                // emailRules: [v => !!v || "E-mail is required", v => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || "E-mail must be valid"],
+            };
         },
-    },
-};
+        methods: {
+            submit(e) {
+                e.preventDefault();
+                this.loading = true;
+                $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/signup/${this.username}/${this.password}`)
+                    .then(res => {
+                        const response = JSON.parse(res).result;
+                        if (response.status === "failure") {
+                            this.password = "";
+                            this.password_verif = "";
+                            this.error = response.message;
+                            this.loading = false;
+                        } else {
+                            this.error = null;
+                            localStorage.setItem("token", response.token);
+                            localStorage.setItem("username", this.username);
+                            this.$router.push("/");
+                        }
+                    })
+                    .catch(err => {
+                        this.error = "Erreur : " + err.status + ". Veuillez réessayer ulterieurement";
+                        this.loading = false;
+                    });
+            },
+        },
+    };
 </script>
