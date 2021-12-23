@@ -7,15 +7,13 @@
 
                 <div>
                     <label for="title">Titre</label>
-                    <input v-model="title" name="title" />
+                    <input required v-model="title" name="title" />
                 </div>
 
                 <div>
                     <label for="description">Description</label>
-                    <textarea v-model="description" name="description" rows="6" />
+                    <textarea required v-model="description" name="description" rows="6" />
                 </div>
-
-                <p v-if="error" v-text="error"></p>
 
                 <div>
                     <button v-if="!loading">Sauvegarder le nouveau bug</button>
@@ -29,38 +27,37 @@
 <script>
     import "../styles/bugedit.less";
     import Navbar from "../components/layout/Navbar.vue";
+    import { postAddBug, getListUsers } from "../functions/api";
+    import { useToast } from "vue-toastification";
 
+    const toast = useToast();
     export default {
         data() {
             return {
                 title: "",
                 description: "",
                 loading: false,
-                error: null,
+                user_id: "",
             };
         },
         methods: {
             submit(e) {
                 e.preventDefault();
                 this.loading = true;
-                $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/login/${this.title}/${this.description}`)
-                    .then(res => {
-                        const response = JSON.parse(res).result;
-                        console.log(response);
-
-                        if (response.status === "failure") {
-                            this.error = response.message;
-                            this.loading = false;
-                        } else {
-                            this.error = null;
-                            this.$router.push("/");
-                        }
+                postAddBug(this, this.user_id, this.title, this.description)
+                    .then(() => {
+                        toast.success("Bug ajouté avec succès");
+                        this.$router.push("/");
                     })
-                    .catch(err => {
-                        this.error = "Erreur : " + err.status + ". Veuillez réessayer ulterieurement";
+                    .finally(() => {
                         this.loading = false;
                     });
             },
+        },
+        created() {
+            getListUsers(this).then(userList => {
+                this.user_id = userList.findIndex(user => user === localStorage.getItem("username"));
+            });
         },
         components: {
             Navbar,

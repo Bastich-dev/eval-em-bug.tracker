@@ -70,7 +70,7 @@ router.beforeEach((to, from, next) => {
         if (to.path.includes("/add-bug") || to.path.includes("/list-bugs")) {
             next();
         } else {
-            next({ path: "/add-bug", replace: true });
+            next({ path: "/list-bugs", replace: true });
         }
     } else {
         if (to.path.includes("/login") || to.path.includes("/signup")) {

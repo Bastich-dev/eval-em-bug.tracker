@@ -14,7 +14,6 @@
             </div>
             <input placeholder="Identifiant" v-model="username" required name="username" autocomplete="username-password" />
             <input placeholder="Mot de passe" v-model="password" required name="password" type="password" autocomplete="current-password" />
-            <p class="error" v-if="error">" {{ error }} "</p>
             <button v-if="!loading">Se connecter</button>
             <button v-if="loading" disabled>Chargement</button>
             <p>Vous n'avez pas de compte ?</p>
@@ -25,13 +24,16 @@
 
 <script>
     import "../styles/login.less";
+    import { login } from "../functions/api";
+    import { useToast } from "vue-toastification";
+
+    const toast = useToast();
     export default {
         data() {
             return {
                 signupRoute: "/signup",
                 loading: false,
                 username: "",
-                error: null,
                 // nameRules: [v => !!v || "Name is required", v => v.length <= 10 || "Name must be less than 10 characters"],
                 password: "",
                 // emailRules: [v => !!v || "E-mail is required", v => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || "E-mail must be valid"],
@@ -41,24 +43,17 @@
             submit(e) {
                 e.preventDefault();
                 this.loading = true;
-                $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/login/${this.username}/${this.password}`)
-                    .then(res => {
-                        const response = JSON.parse(res).result;
-                        console.log(response);
-
-                        if (response.status === "failure") {
-                            this.password = "";
-                            this.error = response.message;
-                            this.loading = false;
-                        } else {
-                            this.error = null;
-                            localStorage.setItem("token", response.token);
-                            localStorage.setItem("username", this.username);
-                            this.$router.push("/");
-                        }
+                login(this, this.username, this.password)
+                    .then(token => {
+                        toast.success("Vous êtes connecté !");
+                        localStorage.setItem("token", token);
+                        localStorage.setItem("username", this.username);
+                        this.$router.push("/");
                     })
-                    .catch(err => {
-                        this.error = "Erreur : " + err.status + ". Veuillez réessayer ulterieurement";
+                    .catch(() => {
+                        this.password = "";
+                    })
+                    .finally(() => {
                         this.loading = false;
                     });
             },

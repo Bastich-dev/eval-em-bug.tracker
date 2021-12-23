@@ -27,7 +27,11 @@
                             <br />
                             <span class="description" v-text="bug.description" />
                         </td>
-                        <td class="date" v-text="new Date(bug.timestamp).toLocaleDateString()"></td>
+                        <td class="date">
+                            {{ new Date(bug.timestamp * 1000).toLocaleDateString() }}
+                            à
+                            {{ new Date(bug.timestamp * 1000).toLocaleTimeString() }}
+                        </td>
                         <td class="author" v-text="users[bug.user_id]"></td>
                         <td class="state">
                             <select v-model="bug.state" @change="changeState(bug.id)">
@@ -46,9 +50,11 @@
 
 <script>
     import "../styles/buglist.less";
-    import "vue-multiselect/dist/vue-multiselect.min.css";
     import Navbar from "../components/layout/Navbar.vue";
+    import { getListUsers, getListBugs, getChangeState, getDeleteBug } from "../functions/api";
+    import { useToast } from "vue-toastification";
 
+    const toast = useToast();
     export default {
         data() {
             return {
@@ -73,17 +79,7 @@
             };
         },
         methods: {
-            changeState(bug_id) {
-                const newValue = this.bugs.find(e => e.id === bug_id);
-                $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/state/${localStorage.getItem("token")}/${bug_id}/${newValue.state}`).then(
-                    res => {
-                        const response = JSON.parse(res).result;
-                        if (response.status === "failure") {
-                        } else {
-                        }
-                    }
-                );
-            },
+            // Utils
             updateList() {
                 if (this.$route.fullPath.includes("todo")) {
                     this.bugs = this.initbugs.filter(bug => bug.user_id === this.user_id);
@@ -91,48 +87,51 @@
                     this.bugs = this.initbugs;
                 }
             },
+
+            // Actions
+            changeState(bug_id) {
+                const newValue = this.bugs.find(e => e.id === bug_id);
+                getChangeState(this, bug_id, newValue).then(() => {
+                    toast.success("Status du bug changé !");
+                });
+                // .catch(() => {});
+            },
             deleteBug(bug_id) {
                 if (window.confirm("Voulez vous vraiment supprimer ce bug ?")) {
-                    $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/delete/${localStorage.getItem("token")}/${bug_id}`).then(res => {
-                        const response = JSON.parse(res).result;
-                        if (response.status === "failure") {
-                        } else {
-                            this.initbugs = this.initbugs.filter(bug => bug.id !== bug_id);
-                            this.updateList();
-                        }
+                    getDeleteBug(this, bug_id).then(() => {
+                        this.initbugs = this.initbugs.filter(bug => bug.id !== bug_id);
+                        this.updateList();
+                        toast.success("Bug supprimé");
                     });
+                    // .catch(() => {});
                 }
             },
         },
-        created() {
-            $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/users/${localStorage.getItem("token")}`).then(res => {
-                const response = JSON.parse(res).result;
-                this.users = response.user;
-                this.user_id = response.user.findIndex(user => user === localStorage.getItem("username"));
-            });
 
-            $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/list/${localStorage.getItem("token")}/0`).then(res => {
-                const response = JSON.parse(res).result;
-                console.log(response.bug);
-                this.initbugs = response.bug;
+        // LifeCycle
+        created() {
+            getListUsers(this).then(userList => {
+                this.users = userList;
+                this.user_id = userList.findIndex(user => user === localStorage.getItem("username"));
+            });
+            getListBugs(this).then(bugs => {
+                console.log(bugs);
+                this.initbugs = bugs;
                 this.updateList();
             });
         },
-
         watch: {
-            $route(to, from) {
+            $route() {
                 const selector = document.querySelector("table")?.classList;
                 if (this && selector) {
                     selector.remove("fadeInUp");
                     setTimeout(() => {
                         this.updateList();
-
                         selector.add("fadeInUp");
                     }, 100);
                 }
             },
         },
-
         components: {
             Navbar,
         },

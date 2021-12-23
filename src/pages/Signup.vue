@@ -14,7 +14,6 @@
                 type="password"
                 autocomplete="current-password"
             />
-            <p class="error" v-if="error">" {{ error }} "</p>
             <button v-if="!loading">S'inscrire</button>
             <button v-if="loading" disabled>Chargement</button>
             <p>Vous avez déjà créé un compte ?</p>
@@ -25,13 +24,14 @@
 
 <script>
     import "../styles/login.less";
+    import { signup } from "../functions/api";
+
     export default {
         data() {
             return {
                 loginRoute: "/login",
                 loading: false,
                 username: "",
-                error: null,
                 // nameRules: [v => !!v || "Name is required", v => v.length <= 10 || "Name must be less than 10 characters"],
                 password: "",
                 password_verif: "",
@@ -42,23 +42,17 @@
             submit(e) {
                 e.preventDefault();
                 this.loading = true;
-                $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/signup/${this.username}/${this.password}`)
-                    .then(res => {
-                        const response = JSON.parse(res).result;
-                        if (response.status === "failure") {
-                            this.password = "";
-                            this.password_verif = "";
-                            this.error = response.message;
-                            this.loading = false;
-                        } else {
-                            this.error = null;
-                            localStorage.setItem("token", response.token);
-                            localStorage.setItem("username", this.username);
-                            this.$router.push("/");
-                        }
+                signup(this, this.username, this.password)
+                    .then(token => {
+                        localStorage.setItem("token", token);
+                        localStorage.setItem("username", this.username);
+                        this.$router.push("/");
                     })
-                    .catch(err => {
-                        this.error = "Erreur : " + err.status + ". Veuillez réessayer ulterieurement";
+                    .catch(() => {
+                        this.password = "";
+                        this.password_verif = "";
+                    })
+                    .finally(() => {
                         this.loading = false;
                     });
             },
