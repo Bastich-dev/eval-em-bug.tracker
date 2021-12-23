@@ -1,36 +1,37 @@
 {
-  "name": "eval-em-t1-2021",
-  "version": "0.0.0",
-  "scripts": {
-    "serve": "vite preview",
-    "build": "vite build",
-    "dev": "vite",
-    "host": "vite preview --host",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@mdi/font": "5.9.55",
-    "roboto-fontface": "*",
-    "vue": "^3.2.25",
-    "vue-router": "^4.0.12",
-    "vue-toastify": "^1.8.1",
-    "vuetify": "^3.0.0-alpha.0",
-    "webfontloader": "^1.0.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^2.0.0",
-    "@vue/cli-plugin-babel": "5.0.0-beta.7",
-    "@vue/cli-service": "5.0.0-beta.7",
-    "@vuetify/vite-plugin": "^1.0.0-alpha.3",
-    "eslint": "^8.5.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-vue": "^8.2.0",
-    "less": "^4.1.2",
-    "prettier": "2.5.1",
-    "sass": "^1.38.0",
-    "sass-loader": "^10.0.0",
-    "vite": "^2.7.2",
-    "vue-cli-plugin-vuetify": "~2.4.5",
-    "vuetify-loader": "^2.0.0-alpha.0"
-  }
+    "name": "eval-em-t1-2021",
+    "version": "0.0.0",
+    "scripts": {
+        "serve": "vite preview",
+        "build": "vite build",
+        "dev": "vite",
+        "host": "vite preview --host",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@mdi/font": "5.9.55",
+        "roboto-fontface": "*",
+        "vue": "3.2.25",
+        "vue-multiselect": "^2.1.6",
+        "vue-router": "^4.0.12",
+        "vue-toastify": "^1.8.1",
+        "vuetify": "^3.0.0-alpha.0",
+        "webfontloader": "^1.0.0"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^2.0.0",
+        "@vue/cli-plugin-babel": "5.0.0-beta.7",
+        "@vue/cli-service": "^4.5.15",
+        "@vuetify/vite-plugin": "^1.0.0-alpha.3",
+        "eslint": "^8.5.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-vue": "^8.2.0",
+        "less": "^4.1.2",
+        "prettier": "2.5.1",
+        "sass": "^1.38.0",
+        "sass-loader": "^10.0.0",
+        "vite": "^2.7.2",
+        "vue-cli-plugin-vuetify": "~2.4.5",
+        "vuetify-loader": "^2.0.0-alpha.0"
+    }
 }

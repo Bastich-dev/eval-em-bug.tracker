@@ -25,20 +25,20 @@
                 </li>
                 <li>
                     <router-link
-                        :style="[listActive ? { borderBottom: '3px solid #3eaf7c' } : { borderBottom: '3px solid transform' }]"
+                        :style="[listActive ? { borderBottom: '3px solid #3eaf7c' } : { borderBottom: '3px solid transparent' }]"
                         to="/list-bugs"
                         >Liste complète</router-link
                     >
                 </li>
                 <li>
                     <router-link
-                        :style="[editActive ? { borderBottom: '3px solid #3eaf7c' } : { borderBottom: '3px solid transform' }]"
-                        to="/edit-bug"
+                        :style="[addActive ? { borderBottom: '3px solid #3eaf7c' } : { borderBottom: '3px solid transparent' }]"
+                        to="/list-bugs/todo"
                         >A traiter</router-link
                     >
                 </li>
                 <li>
-                    <button>Ajouter un bug</button>
+                    <button @click="addNewBug">Ajouter un bug</button>
                 </li>
             </ul>
         </nav>
@@ -46,15 +46,39 @@
 </template>
 
 <script>
-import { useRoute } from "vue-router";
-import "../../styles/navbar.less";
-export default {
-    data() {
-        const { fullPath } = useRoute();
-        return { editActive: fullPath === "/edit-bug", listActive: fullPath === "/list-bugs" };
-    },
-    methods: {
-        submit() {},
-    },
-};
+    import { useRoute } from "vue-router";
+    import "../../styles/navbar.less";
+
+    export default {
+        data() {
+            return { addActive: null, listActive: null };
+        },
+
+        methods: {
+            addNewBug() {
+                this.$router.push({ path: "/add-bug" });
+            },
+        },
+        created() {
+            const { fullPath } = useRoute();
+            if (fullPath === "/list-bugs") {
+                this.addActive = false;
+                this.listActive = true;
+            } else if (fullPath === "/list-bugs/todo") {
+                this.addActive = true;
+                this.listActive = false;
+            }
+        },
+        watch: {
+            $route(to, from) {
+                if (to.fullPath === "/list-bugs") {
+                    this.addActive = false;
+                    this.listActive = true;
+                } else if (to.fullPath === "/list-bugs/todo") {
+                    this.addActive = true;
+                    this.listActive = false;
+                }
+            },
+        },
+    };
 </script>

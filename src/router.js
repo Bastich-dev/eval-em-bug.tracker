@@ -1,11 +1,27 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 import BugList from "./pages/BugList.vue";
-import BugEdit from "./pages/BugEdit.vue";
+import BugAdd from "./pages/BugAdd.vue";
 import Signup from "./pages/Signup.vue";
 import Login from "./pages/Login.vue";
 
 // Routes
 const routes = [
+    {
+        path: "/list-bugs/todo",
+        name: "Liste des bugs de l'utilisateur",
+        component: BugList,
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: "/list-bugs/todo",
+        name: "Liste des bugs",
+        component: BugList,
+        meta: {
+            requiresAuth: true,
+        },
+    },
     {
         path: "/list-bugs",
         name: "Liste des bugs",
@@ -15,9 +31,9 @@ const routes = [
         },
     },
     {
-        path: "/edit-bug/",
+        path: "/add-bug/",
         name: "Editer un bugs",
-        component: BugEdit,
+        component: BugAdd,
         meta: {
             requiresAuth: true,
         },
@@ -42,7 +58,7 @@ const routes = [
 ];
 
 // Initializer le router
-const history = createWebHashHistory();
+const history = createWebHistory();
 const router = createRouter({
     history,
     routes,

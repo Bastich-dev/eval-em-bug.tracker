@@ -7,5 +7,7 @@ import "./styles/_animations.less";
 import "./styles/_common.less";
 
 const app = createApp(App);
+
 app.use(router);
+
 app.mount("#app");
