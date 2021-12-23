@@ -12,7 +12,7 @@ main {
 }
 
 button {
-    padding: 4% 10%;
+    padding: 15px 35px;
     background-color: #3eaf7c;
     color: white;
     border-radius: 5px;
@@ -22,18 +22,25 @@ button {
     cursor: pointer;
     transition: 0.3s;
     font-weight: bold;
+    font-size: 1.2rem;
 }
 
 button:hover {
     background-color: #308f64;
 }
 
-input {
+button:disabled {
+    background-color: #777;
+    cursor: not-allowed;
+}
+
+input,
+textarea {
     border-radius: 5px;
     background-color: white;
     border: 1px solid silver;
     margin: 10px;
-    padding: 15px 5%;
+    padding: 15px 15px;
 }
 
 p {
@@ -41,7 +48,6 @@ p {
 }
 
 p,
-input,
-button {
+input {
     font-size: 1rem;
 }

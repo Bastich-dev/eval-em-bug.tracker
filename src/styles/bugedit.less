@@ -1,0 +1,46 @@
+#bugedit {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    .container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        form {
+            margin-top: 70px;
+            background-color: #384a60;
+            max-width: 80vw;
+            width: 100%;
+            border-radius: 10px;
+            padding: 2%;
+            color: white;
+            h2 {
+                margin: 0 0 30px 0;
+            }
+            p {
+                text-align: center;
+                color: red;
+                margin: 15px 0;
+            }
+            & > div {
+                display: flex;
+                label {
+                    margin: 25px 20px;
+                    font-size: 1.2rem;
+                    width: 8%;
+                }
+                input,
+                textarea {
+                    flex: 1;
+                }
+
+                button {
+                    margin-top: 20px;
+                }
+            }
+        }
+    }
+}

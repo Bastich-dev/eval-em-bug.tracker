@@ -40,7 +40,6 @@
     import "../styles/buglist.less";
     import "vue-multiselect/dist/vue-multiselect.min.css";
     import Navbar from "../components/layout/Navbar.vue";
-    import Multiselect from "vue-multiselect";
 
     export default {
         data() {
@@ -82,6 +81,9 @@
             changeState: async () => {
                 console.log("changeState");
             },
+            deleteBug: async () => {
+                console.log("changeState");
+            },
         },
         created() {
             if (this.$route.fullPath.includes("todo")) {
@@ -109,7 +111,6 @@
 
         components: {
             Navbar,
-            Multiselect,
         },
     };
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div id="navbar">
         <div>
-            <h1>Bug Tracker</h1>
+            <h1 @click="clickOnLogo">Bug Tracker</h1>
 
             <div class="tag">
                 <span>8</span>
@@ -38,7 +38,8 @@
                     >
                 </li>
                 <li>
-                    <button @click="addNewBug">Ajouter un bug</button>
+                    <button v-if="!saveActive" @click="addNewBug">Ajouter un bug</button>
+                    <button v-if="saveActive" @click="saveNewBug">Sauvegarder</button>
                 </li>
             </ul>
         </nav>
@@ -51,16 +52,30 @@
 
     export default {
         data() {
-            return { addActive: null, listActive: null };
+            return { addActive: null, listActive: null, saveActive: null };
         },
 
         methods: {
+            clickOnLogo() {
+                this.$router.push({ path: "/" });
+            },
+
             addNewBug() {
                 this.$router.push({ path: "/add-bug" });
+            },
+            saveNewBug: async () => {
+                console.log("saveNewBug");
             },
         },
         created() {
             const { fullPath } = useRoute();
+
+            if (fullPath.includes("add")) {
+                this.saveActive = true;
+            } else {
+                this.saveActive = false;
+            }
+
             if (fullPath === "/list-bugs") {
                 this.addActive = false;
                 this.listActive = true;
