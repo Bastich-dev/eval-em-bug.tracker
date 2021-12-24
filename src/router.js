@@ -58,7 +58,7 @@ const routes = [
 ];
 
 // Initializer le router
-const history = createWebHistory();
+const history = createWebHashHistory();
 const router = createRouter({
     history,
     routes,
