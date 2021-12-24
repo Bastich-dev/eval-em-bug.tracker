@@ -10,9 +10,12 @@
                 <img src="../assets/vite.svg" alt="" />
                 <i>+</i>
                 <img src="https://icons-for-free.com/iconfiles/png/512/compilator+css+design+less+style+web+icon-1320165727750056654.png" alt="" />
-                <!-- <i>+</i>
-                <img src="../assets/jquery.png" alt="" /> -->
+                <i>+</i>
+                <img src="../assets/jquery.png" alt="" />
             </div>
+            <a href="https://github.com/BastosC/Eval-EM-T1-2021#02-stack-utilisée-1" target="_blank" rel="nofollow noopener" class="why"
+                >Pourquoi cette stack ?</a
+            >
             <input placeholder="Identifiant" v-model="username" required name="username" autocomplete="username-password" />
             <input placeholder="Mot de passe" v-model="password" required name="password" type="password" autocomplete="current-password" />
             <button v-if="!loading">Se connecter</button>

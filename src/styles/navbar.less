@@ -1,16 +1,18 @@
 #navbar {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    height: 8vh;
+    min-height: 8vh;
     background-color: #384a60;
     color: white;
     box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
     z-index: 1;
     padding: 0 3vw;
+
     h1 {
         width: max-content;
         margin: 0;
-        padding: 0 5vw 0 0;
+        padding: 10px 15px;
         transition: 0.3s;
         cursor: pointer;
         &:hover {
@@ -18,9 +20,16 @@
         }
     }
 
+    .menu {
+        display: none;
+    }
     & > div {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
+    }
+    .close {
+        display: none;
     }
 
     .tag {
@@ -28,7 +37,7 @@
         display: flex;
         align-items: center;
         background-color: silver;
-        margin: 0 10px;
+        margin: 5px 10px;
         span {
             color: #384a60;
             padding: 8px 15px;
@@ -94,6 +103,68 @@
                     font-size: 1.2rem;
                     padding: 13px 30px;
                     min-width: 250px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1400px) {
+    #navbar {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 760px) {
+    #navbar {
+        padding: 10px 0;
+        h1 {
+            width: 70%;
+            padding: 10px 15px;
+        }
+        .menu {
+            display: block;
+            width: 50px;
+            height: 50px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-fit: contain;
+            }
+        }
+
+        nav {
+            display: none;
+            transition: 0.5s;
+        }
+        .close {
+            display: flex;
+            justify-content: flex-end;
+            width: 50px;
+            height: 50px;
+            right: 30px;
+            top: 30px;
+            position: absolute;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-fit: contain;
+            }
+        }
+        .openNav {
+            display: block;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background-color: #384a60;
+            ul {
+                flex-wrap: wrap;
+                flex-direction: column;
+                justify-content: center;
+                li {
+                    margin: 15px 0;
                 }
             }
         }

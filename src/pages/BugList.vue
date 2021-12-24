@@ -8,7 +8,7 @@
                         <th>Désignation</th>
                         <th>Date</th>
                         <th>Nom</th>
-                        <th>Etat</th>
+                        <th>État</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -62,7 +62,7 @@
                 statesValues: [
                     {
                         value: "0",
-                        label: "A traiter",
+                        label: "À traiter",
                     },
                     {
                         value: "1",
@@ -92,7 +92,6 @@
             // Actions
             changeState(bug_id) {
                 const newValue = this.bugs.find(e => e.id === bug_id);
-
                 getChangeState(this, bug_id, newValue).then(() => {
                     toast.success("Status du bug changé !");
                 });

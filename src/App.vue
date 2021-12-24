@@ -11,6 +11,16 @@
             <div class="snowflake">❅</div>
             <div class="snowflake">❆</div>
             <div class="snowflake">❄</div>
+            <div class="snowflake">❅</div>
+            <div class="snowflake">❅</div>
+            <div class="snowflake">❆</div>
+            <div class="snowflake">❄</div>
+            <div class="snowflake">❅</div>
+            <div class="snowflake">❆</div>
+            <div class="snowflake">❄</div>
+            <div class="snowflake">❅</div>
+            <div class="snowflake">❆</div>
+            <div class="snowflake">❄</div>
         </div>
         <router-view></router-view>
     </main>

@@ -35,6 +35,12 @@ export async function getListBugs(instance) {
     return getRealResponse(parsedResponse, instance).bug;
 }
 
+export async function getMyListBugs(instance, user_id) {
+    const response = await fetch(`https://greenvelvet.alwaysdata.net/bugTracker/api/list/${localStorage.getItem("token")}/${user_id}`);
+    const parsedResponse = await response.json();
+    return getRealResponse(parsedResponse, instance).bug;
+}
+
 export async function getChangeState(instance, bug_id, newValue) {
     const response = await fetch(
         `https://greenvelvet.alwaysdata.net/bugTracker/api/state/${localStorage.getItem("token")}/${bug_id}/${newValue.state}`

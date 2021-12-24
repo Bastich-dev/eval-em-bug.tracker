@@ -2,23 +2,37 @@
     <div id="navbar">
         <div>
             <h1 @click="clickOnLogo">Bug Tracker</h1>
-
-            <div class="tag">
-                <span v-text="bugs_todo" />
-                <i class="bugs">Bugs</i>
+            <div class="menu" @click="openNav">
+                <img src="../../assets/menu.png" alt="menu" />
             </div>
 
             <div class="tag">
-                <span v-text="bugs_progress" />
+                <span v-if="bugs_todo !== null" v-text="bugs_todo" />
+                <span v-if="bugs_todo === null">
+                    <div class="spinner-small" />
+                </span>
+                <i class="bugs">Bugs à traiter</i>
+            </div>
+
+            <div class="tag">
+                <span v-if="bugs_progress !== null" v-text="bugs_progress" />
+                <span v-if="bugs_progress === null">
+                    <div class="spinner-small" />
+                </span>
                 <i class="todo">En cours</i>
             </div>
 
             <div class="tag">
-                <span v-text="bugs_done" />
+                <span v-if="bugs_done !== null" v-text="bugs_done" />
+                <span v-if="bugs_done === null">
+                    <div class="spinner-small" />
+                </span>
                 <i class="done">Traités</i>
             </div>
         </div>
-        <nav>
+        <nav v-bind:class="{ openNav: navResponsiveActive }">
+            <div class="close" @click="closeNav"><img src="../../assets/close.png" alt="close" /></div>
+
             <ul>
                 <li>
                     <div class="logout" @click="logout"></div>
@@ -34,12 +48,11 @@
                     <router-link
                         :style="[addActive ? { borderBottom: '3px solid #3eaf7c' } : { borderBottom: '3px solid transparent' }]"
                         to="/list-bugs/todo"
-                        >A traiter</router-link
+                        >À traiter</router-link
                     >
                 </li>
                 <li>
-                    <button v-if="!saveActive" @click="addNewBug">Ajouter un bug</button>
-                    <!-- <button v-if="saveActive" @click="saveNewBug">Sauvegarder</button> -->
+                    <button @click="addNewBug">Ajouter un bug</button>
                 </li>
             </ul>
         </nav>
@@ -54,7 +67,7 @@
     export default {
         props: ["bugs"],
         data() {
-            return { addActive: null, listActive: null, saveActive: null, bugs_done: [], bugs_progress: [], bugs_todo: [] };
+            return { addActive: null, listActive: null, bugs_done: null, bugs_progress: null, bugs_todo: null, navResponsiveActive: false };
         },
 
         methods: {
@@ -76,63 +89,60 @@
                     this.$router.push("/");
                 }
             },
+
+            closeNav() {
+                this.navResponsiveActive = false;
+            },
+            openNav() {
+                this.navResponsiveActive = true;
+            },
             clickOnLogo() {
                 this.$router.push({ path: "/" });
             },
             addNewBug() {
+                this.navResponsiveActive = false;
                 this.$router.push({ path: "/add-bug" });
             },
 
             saveNewBug: async () => {
                 console.log("saveNewBug");
             },
-        },
-        created() {
-            const { fullPath } = useRoute();
-
-            if (this.bugs) {
-                this.bugs_done = this.bugs.filter(e => e.state === "2").length;
-                this.bugs_progress = this.bugs.filter(e => e.state === "1").length;
-                this.bugs_todo = this.bugs.filter(e => e.state === "0").length;
-            } else {
-                getListBugs(this).then(bugs => {
-                    this.bugs_done = bugs.filter(e => e.state === "2").length;
-                    this.bugs_progress = bugs.filter(e => e.state === "1").length;
-                    this.bugs_todo = bugs.filter(e => e.state === "0").length;
-                });
-            }
-
-            // if (fullPath.includes("add")) {
-            //     this.saveActive = true;
-            // } else {
-            //     this.saveActive = false;
-            // }
-
-            if (fullPath === "/list-bugs") {
-                this.addActive = false;
-                this.listActive = true;
-            } else if (fullPath === "/list-bugs/todo") {
-                this.addActive = true;
-                this.listActive = false;
-            }
-        },
-        updated() {
-            console.log(this.bugs);
-            if (this.bugs) {
-                this.bugs_done = this.bugs.filter(e => e.state === "2").length;
-                this.bugs_progress = this.bugs.filter(e => e.state === "1").length;
-                this.bugs_todo = this.bugs.filter(e => e.state === "0").length;
-            }
-        },
-        watch: {
-            $route(to, from) {
-                if (to.fullPath === "/list-bugs") {
+            checkUnderline(path) {
+                if (path === "/list-bugs") {
                     this.addActive = false;
                     this.listActive = true;
-                } else if (to.fullPath === "/list-bugs/todo") {
+                } else if (path === "/list-bugs/todo") {
                     this.addActive = true;
                     this.listActive = false;
                 }
+            },
+        },
+        created() {
+            const { fullPath } = useRoute();
+            this.checkUnderline(fullPath);
+        },
+
+        watch: {
+            $props: {
+                handler() {
+                    if (this.bugs) {
+                        this.bugs_done = this.bugs.filter(e => e.state === "2").length;
+                        this.bugs_progress = this.bugs.filter(e => e.state === "1").length;
+                        this.bugs_todo = this.bugs.filter(e => e.state === "0").length;
+                    } else {
+                        getListBugs(this).then(bugs => {
+                            console.log(bugs);
+                            this.bugs_done = bugs.filter(e => e.state === "2").length;
+                            this.bugs_progress = bugs.filter(e => e.state === "1").length;
+                            this.bugs_todo = bugs.filter(e => e.state === "0").length;
+                        });
+                    }
+                },
+                deep: true,
+                immediate: true,
+            },
+            $route(to, from) {
+                this.checkUnderline(to.fullPath);
             },
         },
     };
