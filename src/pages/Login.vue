@@ -1,6 +1,7 @@
 <template>
     <div id="login">
         <form class="fadeInUp" @submit="submit">
+            <img src="https://cdn-icons-png.flaticon.com/512/1358/1358904.png" alt="christmas" />
             <h1>BugTracker</h1>
             <h2>Se connecter</h2>
             <div class="stack">
@@ -9,8 +10,8 @@
                 <img src="../assets/vite.svg" alt="" />
                 <i>+</i>
                 <img src="https://icons-for-free.com/iconfiles/png/512/compilator+css+design+less+style+web+icon-1320165727750056654.png" alt="" />
-                <i>+</i>
-                <img src="../assets/jquery.png" alt="" />
+                <!-- <i>+</i>
+                <img src="../assets/jquery.png" alt="" /> -->
             </div>
             <input placeholder="Identifiant" v-model="username" required name="username" autocomplete="username-password" />
             <input placeholder="Mot de passe" v-model="password" required name="password" type="password" autocomplete="current-password" />

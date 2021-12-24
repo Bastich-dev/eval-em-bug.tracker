@@ -10,8 +10,10 @@ import "./styles/_animations.less";
 import "./styles/_common.less";
 
 const app = createApp(App);
-
-app.use(Toast);
+const options = {
+    position: "bottom-right",
+};
+app.use(Toast, options);
 app.use(router);
 
 app.mount("#app");

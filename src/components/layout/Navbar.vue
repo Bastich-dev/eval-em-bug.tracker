@@ -4,17 +4,17 @@
             <h1 @click="clickOnLogo">Bug Tracker</h1>
 
             <div class="tag">
-                <span>8</span>
+                <span v-text="bugs_todo" />
                 <i class="bugs">Bugs</i>
             </div>
 
             <div class="tag">
-                <span>8</span>
+                <span v-text="bugs_progress" />
                 <i class="todo">En cours</i>
             </div>
 
             <div class="tag">
-                <span>8</span>
+                <span v-text="bugs_done" />
                 <i class="done">Traités</i>
             </div>
         </div>
@@ -39,7 +39,7 @@
                 </li>
                 <li>
                     <button v-if="!saveActive" @click="addNewBug">Ajouter un bug</button>
-                    <button v-if="saveActive" @click="saveNewBug">Sauvegarder</button>
+                    <!-- <button v-if="saveActive" @click="saveNewBug">Sauvegarder</button> -->
                 </li>
             </ul>
         </nav>
@@ -47,12 +47,14 @@
 </template>
 
 <script>
+    import { getListBugs } from "../../functions/api";
     import { useRoute } from "vue-router";
     import "../../styles/navbar.less";
 
     export default {
+        props: ["bugs"],
         data() {
-            return { addActive: null, listActive: null, saveActive: null };
+            return { addActive: null, listActive: null, saveActive: null, bugs_done: [], bugs_progress: [], bugs_todo: [] };
         },
 
         methods: {
@@ -77,10 +79,10 @@
             clickOnLogo() {
                 this.$router.push({ path: "/" });
             },
-
             addNewBug() {
                 this.$router.push({ path: "/add-bug" });
             },
+
             saveNewBug: async () => {
                 console.log("saveNewBug");
             },
@@ -88,11 +90,23 @@
         created() {
             const { fullPath } = useRoute();
 
-            if (fullPath.includes("add")) {
-                this.saveActive = true;
+            if (this.bugs) {
+                this.bugs_done = this.bugs.filter(e => e.state === "2").length;
+                this.bugs_progress = this.bugs.filter(e => e.state === "1").length;
+                this.bugs_todo = this.bugs.filter(e => e.state === "0").length;
             } else {
-                this.saveActive = false;
+                getListBugs(this).then(bugs => {
+                    this.bugs_done = bugs.filter(e => e.state === "2").length;
+                    this.bugs_progress = bugs.filter(e => e.state === "1").length;
+                    this.bugs_todo = bugs.filter(e => e.state === "0").length;
+                });
             }
+
+            // if (fullPath.includes("add")) {
+            //     this.saveActive = true;
+            // } else {
+            //     this.saveActive = false;
+            // }
 
             if (fullPath === "/list-bugs") {
                 this.addActive = false;
@@ -100,6 +114,14 @@
             } else if (fullPath === "/list-bugs/todo") {
                 this.addActive = true;
                 this.listActive = false;
+            }
+        },
+        updated() {
+            console.log(this.bugs);
+            if (this.bugs) {
+                this.bugs_done = this.bugs.filter(e => e.state === "2").length;
+                this.bugs_progress = this.bugs.filter(e => e.state === "1").length;
+                this.bugs_todo = this.bugs.filter(e => e.state === "0").length;
             }
         },
         watch: {

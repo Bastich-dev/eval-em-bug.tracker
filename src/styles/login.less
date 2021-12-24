@@ -4,6 +4,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
+
     & > form {
         max-width: 400px;
         width: 100%;
@@ -14,6 +16,15 @@
         padding: 2% 4%;
         background-color: #282c34;
         color: white;
+
+        & > img {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            left: -7%;
+            top: -8%;
+            transform: rotate(-25deg) rotateY(180deg);
+        }
 
         h1 {
             text-align: center;
@@ -49,6 +60,10 @@
             margin: 0 0 45px 0;
             img {
                 width: 15%;
+            }
+            i {
+                font-size: 1.2rem;
+                color: white;
             }
         }
     }

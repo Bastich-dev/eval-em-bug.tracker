@@ -1,6 +1,6 @@
 <template>
     <div id="buglist">
-        <Navbar />
+        <Navbar :bugs="bugs" />
         <div class="container">
             <table class="fadeInUp">
                 <thead>
@@ -66,11 +66,11 @@
                     },
                     {
                         value: "1",
-                        label: "Traité",
+                        label: "En cours",
                     },
                     {
                         value: "2",
-                        label: "En cours",
+                        label: "Traité",
                     },
                 ],
                 bugs: null,
@@ -82,7 +82,8 @@
             // Utils
             updateList() {
                 if (this.$route.fullPath.includes("todo")) {
-                    this.bugs = this.initbugs.filter(bug => bug.user_id === this.user_id);
+                    console.log(this.user_id);
+                    this.bugs = this.initbugs.filter(bug => +bug.user_id === this.user_id);
                 } else {
                     this.bugs = this.initbugs;
                 }
@@ -91,6 +92,7 @@
             // Actions
             changeState(bug_id) {
                 const newValue = this.bugs.find(e => e.id === bug_id);
+
                 getChangeState(this, bug_id, newValue).then(() => {
                     toast.success("Status du bug changé !");
                 });
@@ -113,13 +115,13 @@
             getListUsers(this).then(userList => {
                 this.users = userList;
                 this.user_id = userList.findIndex(user => user === localStorage.getItem("username"));
-            });
-            getListBugs(this).then(bugs => {
-                console.log(bugs);
-                this.initbugs = bugs;
-                this.updateList();
+                getListBugs(this).then(bugs => {
+                    this.initbugs = bugs;
+                    this.updateList();
+                });
             });
         },
+        updated() {},
         watch: {
             $route() {
                 const selector = document.querySelector("table")?.classList;

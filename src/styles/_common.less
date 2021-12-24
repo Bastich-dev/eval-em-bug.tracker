@@ -77,3 +77,31 @@ input {
         transform: rotate(360deg);
     }
 }
+
+.Vue-Toastification__toast {
+    align-items: center;
+
+    &:before {
+        content: "";
+        height: 50px;
+        width: 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-image: url(https://cdn-icons-png.flaticon.com/512/1358/1358904.png);
+        position: absolute;
+        top: -50px;
+        left: -50px;
+    }
+}
+.Vue-Toastification__icon {
+    margin: 0 15px 0 0 !important;
+}
+
+.Vue-Toastification__toast-body {
+    font-weight: bold;
+}
+
+.Vue-Toastification__close-button {
+    padding: 2px 4px !important;
+}

@@ -37,7 +37,7 @@ export async function getListBugs(instance) {
 
 export async function getChangeState(instance, bug_id, newValue) {
     const response = await fetch(
-        `http://greenvelvet.alwaysdata.net/bugTracker/api/state/${localStorage.getItem("token")}/${bug_id}/${newValue.status}`
+        `http://greenvelvet.alwaysdata.net/bugTracker/api/state/${localStorage.getItem("token")}/${bug_id}/${newValue.state}`
     );
     const parsedResponse = await response.json();
     return getRealResponse(parsedResponse, instance);
