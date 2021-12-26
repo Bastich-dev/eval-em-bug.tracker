@@ -38,6 +38,9 @@
 
 <script>
     export default {
+        mounted() {
+            $(".scrollToTop").hide();
+        },
         methods: {
             scrollToTop() {
                 // Jquery Animate

@@ -14,7 +14,7 @@
                 <img src="../assets/jquery.png" alt="" />
             </div>
             <a href="https://github.com/BastosC/Eval-EM-T1-2021#02-stack-utilisée-1" target="_blank" rel="nofollow noopener" class="why"
-                >Pourquoi cette stack ?</a
+                >Pourquoi cette stack technique ?</a
             >
             <input placeholder="Identifiant" v-model="username" required name="username" autocomplete="username-password" />
             <input placeholder="Mot de passe" v-model="password" required name="password" type="password" autocomplete="current-password" />

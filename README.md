@@ -1,10 +1,14 @@
 # Projet : Eval-EM-T1-2021 - Bug Report tickets
 
-## Url de visualisation :
+## Url de Démo : https://eval-em-t1-2021.vercel.app/
+
+## Installation local :
+
+> `$ npm install && npm run dev`
 
 -   #### 01. [Description](#01)
--   #### 02. [Stack utilisée](#02)
-    -   ##### [Stack](#02-1)
+-   #### 02. [Stack technique utilisée](#02)
+    -   ##### [Stack technique](#02-1)
     -   ##### [Liste des API's REST](#02-1)
 -   #### 03. [Liste des librairies](#03)
     -   ##### [Utilitaires](#03-1)
@@ -27,25 +31,31 @@ Objectifs Vous devez effectuer l’intégration des pages de l’application en 
 
 <a name='02'></a>
 
-## 02. Stack utilisée
+## 02. Stack technique utilisée
 
 <a name='02-1'></a>
 
-### Pourquoi cette stack ?
+### Pourquoi cette stack technique ?
 
-###### <u>Vue.js v3 </u> : Selon le brief, Il est précisé que l'on peux utiliser tout les frameworks JS que l'on souhaite, et comme au cours de mes années de formation à l'école multimédia, j'ai déjà réalisé ce genre de projets en HTML/Js jQuery ainsi que React.js, et que cette année, nous allons pratiquer du Vue.js, j'ai donc décidé de profiter de ce petit projet pour mon apprendre à utiliser de manière basique "Vue.js" avec "Vite.js", framework que je n'ai encore jamais utilisé.
+##### <u>Vue.js v3 </u> : Selon le brief, Il est précisé que l'on peux utiliser tout les frameworks JS que l'on souhaite, et comme au cours de mes années de formation à l'école multimédia, j'ai déjà réalisé ce genre de projets en HTML/Js jQuery ainsi que React.js, et que cette année, nous allons pratiquer du Vue.js, j'ai donc décidé de profiter de ce petit projet pour mon apprendre à utiliser de manière basique "Vue.js" avec "Vite.js", framework que je n'ai encore jamais utilisé.
 
-###### <u>Framework Vite </u> : Framework leger compatible avec Vue3
+##### <u>Framework Vite </u> : Framework leger compatible avec Vue3
 
-###### <u>Less </u> : Je n'avais jamais utilisé le préprocesseur Css "Less", j'ai voulu essayer. Je n'ai pas souhaité intégrer des librairies d'UI comme Vuetify ou Quasar, car cela aurait donné un résultat trop différent des compétences évalués, ducoup mes composants vue sont semblables à du Html/CSS basique.
+##### <u>Less </u> : Je n'avais jamais utilisé le préprocesseur Css "Less", j'ai voulu essayer. Je n'ai pas souhaité intégrer des librairies d'UI comme Vuetify ou Quasar, car cela aurait donné un résultat trop différent des compétences évalués, ducoup mes composants vue sont semblables à du Html/CSS basique.
 
-###### <u>jQuery</u> : Malré que l'utilisation de jQuery est non recommandé avec Vue.js, J'ai choisi d'inclure jQuery pour répondre au critère évalué :
+##### <u>jQuery</u> : Malré que l'utilisation de jQuery est non recommandé avec Vue.js, J'ai choisi d'inclure jQuery pour répondre au critère évalué :
 
 > Qualité du JQuery - Bonne utilisation de la bibliothêque JQuery, gestionnaires d'évènements, traversing
 
-###### J'ai donc inclus des "traversing", des gestions d'évenements.
+##### J'ai donc inclus des "traversing", des gestions d'évenements. Les éléments gérés en jquery sont :
 
-##### Stack
+##### - L'animation de changement de status
+
+##### - L'animation de transition de pages
+
+##### - Le bouton ScrollToTop
+
+##### Stack technique
 
 | Utilisation              | Nom                 |
 | ------------------------ | ------------------- |

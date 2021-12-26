@@ -101,7 +101,6 @@
         // LifeCycle
         created() {
             this.resfreshlistBugs();
-            $(".scrollToTop").hide();
 
             // Rafraichement régulier de la liste des bugs toutes les 30 secondes
             setInterval(() => {
