@@ -18,38 +18,57 @@
             >
             <input placeholder="Identifiant" v-model="username" required name="username" autocomplete="username-password" />
             <input placeholder="Mot de passe" v-model="password" required name="password" type="password" autocomplete="current-password" />
+            <div class="checkbox" @click="toggleRemember"><input type="checkbox" :checked="remember" /> <span>Se souvenir de moi</span></div>
             <button v-if="!loading">Se connecter</button>
             <button v-if="loading" disabled>Chargement</button>
             <p>Vous n'avez pas de compte ?</p>
-            <router-link :to="{ path: signupRoute }">Cliquez ici pour vous inscrire</router-link>
+            <router-link to="/signup">Cliquez ici pour vous inscrire</router-link>
         </form>
     </div>
 </template>
 
 <script>
-    import "../styles/login.less";
-    import { login } from "../functions/api";
     import { useToast } from "vue-toastification";
+    import { login } from "../functions/api";
+    import "../styles/login.less";
 
     const toast = useToast();
     export default {
         data() {
             return {
-                signupRoute: "/signup",
                 loading: false,
                 username: "",
-                // nameRules: [v => !!v || "Name is required", v => v.length <= 10 || "Name must be less than 10 characters"],
                 password: "",
-                // emailRules: [v => !!v || "E-mail is required", v => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || "E-mail must be valid"],
+                remember: false,
             };
         },
+        created() {
+            const encodedUser = localStorage.getItem("remember");
+            if (encodedUser) {
+                const user = JSON.parse(atob(encodedUser));
+                this.remember = true;
+                this.username = user.username;
+                this.password = user.password;
+            }
+        },
         methods: {
+            toggleRemember() {
+                this.remember = !this.remember;
+            },
+            // Submit avec touche enter
             submit(e) {
                 e.preventDefault();
                 this.loading = true;
-                login(this, this.username, this.password)
+                login(this.username, this.password)
                     .then(token => {
+                        if (this.remember) {
+                            const encodedUser = btoa(JSON.stringify({ username: this.username, password: this.password }));
+                            localStorage.setItem("remember", encodedUser);
+                        } else {
+                            localStorage.removeItem("remember");
+                        }
                         toast.success("Vous êtes connecté !");
+                        // Login Mémorisation du jeton
                         localStorage.setItem("token", token);
                         localStorage.setItem("username", this.username);
                         this.$router.push("/");

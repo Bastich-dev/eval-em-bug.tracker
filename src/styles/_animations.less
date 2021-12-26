@@ -1,3 +1,5 @@
+// FADE IN UP ANIMATION
+
 .fadeInUp {
     -webkit-animation: 0.5s linear 0s fade_in_up;
     animation: 0.5s linear 0s fade_in_up;
@@ -24,6 +26,33 @@
         top: 0;
     }
 }
+
+// GLOW CELL ANIMATION
+
+.glowCell {
+    -webkit-animation: 1s linear 0s glow_cell;
+    animation: 1s linear 0s glow_cell;
+    position: relative;
+}
+
+@-webkit-keyframes glow_cell {
+    from {
+        background-color: rgba(0, 255, 0, 0.7);
+    }
+    to {
+        background-color: rgba(0, 255, 0, 0);
+    }
+}
+@keyframes glow_cell {
+    from {
+        background-color: rgba(0, 255, 0, 0.7);
+    }
+    to {
+        background-color: rgba(0, 255, 0, 0);
+    }
+}
+
+// SHAKE ANIMATION
 
 @-webkit-keyframes shake {
     0% {
@@ -96,6 +125,7 @@
     }
 }
 
+// SNOW ANIMATION
 .snowflake {
     color: #fff;
     font-size: 1em;

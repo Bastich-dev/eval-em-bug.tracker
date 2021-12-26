@@ -26,12 +26,15 @@
 
 <script>
     import "../styles/bugedit.less";
-    import Navbar from "../components/layout/Navbar.vue";
+    import Navbar from "../components/Navbar.vue";
     import { postAddBug, getListUsers } from "../functions/api";
     import { useToast } from "vue-toastification";
 
     const toast = useToast();
     export default {
+        components: {
+            Navbar,
+        },
         data() {
             return {
                 title: "",
@@ -40,27 +43,25 @@
                 user_id: "",
             };
         },
+        created() {
+            getListUsers().then(userList => {
+                this.user_id = userList.findIndex(user => user === localStorage.getItem("username"));
+            });
+        },
         methods: {
+            // Submit avec touche enter quand title focused
             submit(e) {
                 e.preventDefault();
                 this.loading = true;
-                postAddBug(this, this.user_id, this.title, this.description)
+                postAddBug(this.user_id, this.title, this.description)
                     .then(() => {
-                        toast.success("Bug ajouté avec succès");
+                        toast.success(`Bug "${this.title}" ajouté avec succès`);
                         this.$router.push("/");
                     })
                     .finally(() => {
                         this.loading = false;
                     });
             },
-        },
-        created() {
-            getListUsers(this).then(userList => {
-                this.user_id = userList.findIndex(user => user === localStorage.getItem("username"));
-            });
-        },
-        components: {
-            Navbar,
         },
     };
 </script>

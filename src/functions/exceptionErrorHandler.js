@@ -1,14 +1,16 @@
 import { useToast } from "vue-toastification";
+import router from "../router";
 const toast = useToast();
 
-export default function checkResponse(response, instance) {
+export default function exceptionErrorHandler(response) {
     if (response.status === "done") return true;
     else {
-        // Error Types handler
+        // Front-end Error handler
         if (response.message.includes("token")) {
-            instance.$router.push({ path: "/login", replace: true });
             localStorage.removeItem("token");
+            localStorage.removeItem("username");
             toast.error("Erreur, votre session a expiré, veuillez vous reconnecter");
+            router.push({ path: "/login", replace: true });
             return false;
         } else return null;
     }

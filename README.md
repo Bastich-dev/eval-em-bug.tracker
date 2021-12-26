@@ -43,7 +43,7 @@ Objectifs Vous devez effectuer l’intégration des pages de l’application en 
 
 > Qualité du JQuery - Bonne utilisation de la bibliothêque JQuery, gestionnaires d'évènements, traversing
 
-###### J'ai donc inclus des "traversing", des gestions d'évenements, ainsi que les appels en jQuery.
+###### J'ai donc inclus des "traversing", des gestions d'évenements.
 
 ##### Stack
 
@@ -118,11 +118,11 @@ Sur cette page, l'utilisateur peut s'inscrire à l'application en renseignant un
 
 #### - Page principale ( Liste des bugs )
 
-Sur cette page, l'utilisateur peut voir tous les bugs de tous les utilisateurs, changer leurs états ou bien les supprimer. Un compteur dans la Navbar indique le nombre de bugs selon l'affichage.
+Sur cette page, l'utilisateur peut voir tous les bugs de tous les utilisateurs, changer leurs états ou bien les supprimer. Un compteur dans la Navbar indique le nombre de bugs selon l'affichage.Malgré que les informations se modifient en fonction des interactions de l'utilisateur, la liste des bugs se rafraîchit automatiquement toutes les 30 secondes pour prévenir des changements faits par les autres personnes ( ne pas surcharger d'appels aussi ).
 
 #### - Page principale ( Liste des bugs de l'utilisateur )
 
-Sur cette page, l'utilisateur peut voir tous les bugs ayant été créés par lui-même, changer leur état ou bien les supprimer. Un compteur dans la Navbar indique le nombre de bugs selon l'affichage.
+Sur cette page, l'utilisateur peut voir tous les bugs ayant été créés par lui-même, changer leur état ou bien les supprimer. Un compteur dans la Navbar indique le nombre de bugs selon l'affichage. Malgré que les informations se modifient en fonction des interactions de l'utilisateur, la liste des bugs se rafraîchit automatiquement toutes les 30 secondes pour prévenir des changements faits par les autres personnes ( ne pas surcharger d'appels aussi ).
 
 #### - Page d'ajout de bug
 

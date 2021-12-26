@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import BugList from "./pages/BugList.vue";
 import BugAdd from "./pages/BugAdd.vue";
 import Signup from "./pages/Signup.vue";
@@ -64,7 +64,7 @@ const router = createRouter({
     routes,
 });
 
-// Vérifier l'authentification & Redirections
+// Vérifier la mémorisation de l'authentification & Redirections
 router.beforeEach((to, from, next) => {
     if (localStorage.getItem("token")) {
         if (to.path.includes("/add-bug") || to.path.includes("/list-bugs")) {
@@ -79,8 +79,6 @@ router.beforeEach((to, from, next) => {
             next({ path: "/login", replace: true });
         }
     }
-
-    // next();
 });
 
 export default router;

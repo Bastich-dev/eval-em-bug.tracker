@@ -2,10 +2,15 @@
     <div id="navbar">
         <div>
             <h1 @click="clickOnLogo">Bug Tracker</h1>
+
             <div class="menu" @click="openNav">
-                <img src="../../assets/menu.png" alt="menu" />
+                <img src="../assets/menu.png" alt="menu" />
             </div>
 
+            <div class="tag username">
+                <img src="../assets/user.svg" alt="user" />
+                <i v-text="username" />
+            </div>
             <div class="tag">
                 <span v-if="bugs_todo !== null" v-text="bugs_todo" />
                 <span v-if="bugs_todo === null">
@@ -31,22 +36,22 @@
             </div>
         </div>
         <nav v-bind:class="{ openNav: navResponsiveActive }">
-            <div class="close" @click="closeNav"><img src="../../assets/close.png" alt="close" /></div>
+            <div class="close" @click="closeNav"><img src="../assets/close.png" alt="close" /></div>
 
             <ul>
                 <li>
-                    <div class="logout" @click="logout"></div>
+                    <div class="logout" @click="tryLogout"></div>
                 </li>
                 <li>
                     <router-link
-                        :style="[listActive ? { borderBottom: '3px solid #3eaf7c' } : { borderBottom: '3px solid transparent' }]"
+                        :style="[listActive ? { borderBottom: '3px solid var(--color-primary)' } : { borderBottom: '3px solid transparent' }]"
                         to="/list-bugs"
                         >Liste complète</router-link
                     >
                 </li>
                 <li>
                     <router-link
-                        :style="[addActive ? { borderBottom: '3px solid #3eaf7c' } : { borderBottom: '3px solid transparent' }]"
+                        :style="[addActive ? { borderBottom: '3px solid var(--color-primary)' } : { borderBottom: '3px solid transparent' }]"
                         to="/list-bugs/todo"
                         >À traiter</router-link
                     >
@@ -60,33 +65,59 @@
 </template>
 
 <script>
-    import { getListBugs } from "../../functions/api";
     import { useRoute } from "vue-router";
-    import "../../styles/navbar.less";
+    import { getListBugs, logout } from "../functions/api";
+    import "../styles/navbar.less";
+    import { useToast } from "vue-toastification";
 
+    const toast = useToast();
     export default {
-        props: ["bugs"],
+        props: ["propsBugs"],
         data() {
-            return { addActive: null, listActive: null, bugs_done: null, bugs_progress: null, bugs_todo: null, navResponsiveActive: false };
+            return {
+                addActive: null,
+                listActive: null,
+                bugs_done: null,
+                bugs_progress: null,
+                bugs_todo: null,
+                navResponsiveActive: false,
+                username: localStorage.getItem("username"),
+            };
+        }, // A la création du composant
+        created() {
+            const { fullPath } = useRoute();
+            this.checkUnderline(fullPath);
         },
-
-        methods: {
-            logout() {
-                if (window.confirm("Voulez vous vraiment vous déconnecter ?")) {
-                    $.get(`http://greenvelvet.alwaysdata.net/bugTracker/api/logout/${localStorage.getItem("token")}`)
-                        .then(res => {
-                            if (response.status === "failure") {
-                            } else {
-                                localStorage.setItem("token", response.token);
-                                this.$router.push("/");
-                            }
-                        })
-                        .catch(err => {
-                            this.error = "Erreur : " + err.status + ". Veuillez réessayer ulterieurement";
+        watch: {
+            // A chaque changement de props "bugs"
+            $props: {
+                handler() {
+                    if (this.propsBugs) this.setBugsCount(this.propsBugs);
+                    else {
+                        getListBugs().then(bugs => {
+                            this.setBugsCount(bugs);
                         });
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("username");
-                    this.$router.push("/");
+                    }
+                },
+                deep: true,
+                immediate: true,
+            },
+
+            // A chaque changement de route
+            $route(to) {
+                this.checkUnderline(to.fullPath);
+            },
+        },
+        methods: {
+            tryLogout() {
+                if (window.confirm("Voulez vous vraiment vous déconnecter ?")) {
+                    logout().then(() => {
+                        toast.success("Vous êtes déconnecté !");
+                        // Login Suppression du jeton
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("username");
+                        this.$router.push("/");
+                    });
                 }
             },
 
@@ -104,9 +135,7 @@
                 this.$router.push({ path: "/add-bug" });
             },
 
-            saveNewBug: async () => {
-                console.log("saveNewBug");
-            },
+            // Underline des liens de la navbar
             checkUnderline(path) {
                 if (path === "/list-bugs") {
                     this.addActive = false;
@@ -116,33 +145,12 @@
                     this.listActive = false;
                 }
             },
-        },
-        created() {
-            const { fullPath } = useRoute();
-            this.checkUnderline(fullPath);
-        },
 
-        watch: {
-            $props: {
-                handler() {
-                    if (this.bugs) {
-                        this.bugs_done = this.bugs.filter(e => e.state === "2").length;
-                        this.bugs_progress = this.bugs.filter(e => e.state === "1").length;
-                        this.bugs_todo = this.bugs.filter(e => e.state === "0").length;
-                    } else {
-                        getListBugs(this).then(bugs => {
-                            console.log(bugs);
-                            this.bugs_done = bugs.filter(e => e.state === "2").length;
-                            this.bugs_progress = bugs.filter(e => e.state === "1").length;
-                            this.bugs_todo = bugs.filter(e => e.state === "0").length;
-                        });
-                    }
-                },
-                deep: true,
-                immediate: true,
-            },
-            $route(to, from) {
-                this.checkUnderline(to.fullPath);
+            // Affecter les valeurs des compteurs
+            setBugsCount(bugList) {
+                this.bugs_done = bugList.filter(e => e.state === "2").length;
+                this.bugs_progress = bugList.filter(e => e.state === "1").length;
+                this.bugs_todo = bugList.filter(e => e.state === "0").length;
             },
         },
     };

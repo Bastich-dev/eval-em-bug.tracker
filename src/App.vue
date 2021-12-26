@@ -1,5 +1,6 @@
 <template>
     <main>
+        <!-- Snow -->
         <div class="snowflakes" aria-hidden="true">
             <div class="snowflake">❅</div>
             <div class="snowflake">❅</div>
@@ -22,21 +23,26 @@
             <div class="snowflake">❆</div>
             <div class="snowflake">❄</div>
         </div>
+
+        <!-- Filtre pour l'image de fond -->
+        <!-- <div class="filter" /> -->
+
+        <!-- View -->
         <router-view></router-view>
+
+        <div class="scrollToTop" @click="scrollToTop">
+            <img src="./assets/arrow-up.png" alt="arrow-up" />
+        </div>
     </main>
 </template>
 
 <script>
-    import { defineComponent } from "vue";
-
-    export default defineComponent({
+    export default {
         methods: {
-            log(msg) {
-                console.log(msg);
+            scrollToTop() {
+                // Jquery Animate
+                $(".container").animate({ scrollTop: 0 }, 400, "swing");
             },
         },
-        setup() {
-            return {};
-        },
-    });
+    };
 </script>
