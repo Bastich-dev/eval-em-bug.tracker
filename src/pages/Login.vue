@@ -13,7 +13,7 @@
                 <i>+</i>
                 <img src="../assets/jquery.png" alt="" />
             </div>
-            <a href="https://github.com/BastosC/Eval-EM-T1-2021#02-stack-utilisée-1" target="_blank" rel="nofollow noopener" class="why"
+            <a href="https://github.com/BastosC/Eval-EM-T1-2021#02-stack-technique-utilisée-1" target="_blank" rel="nofollow noopener" class="why"
                 >Pourquoi cette stack technique ?</a
             >
             <input placeholder="Identifiant" v-model="username" required name="username" autocomplete="username-password" />
