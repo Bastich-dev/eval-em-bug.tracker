@@ -38,6 +38,7 @@
                         </td>
                         <td class="author" v-text="users[bug.user_id]"></td>
                         <td class="state">
+                            <div :style="getStateColor(bug.state)" class="state-color" />
                             <select v-model="bug.state" @change="changeState(bug.id)">
                                 <option v-for="state in statesValues" v-bind:value="state.value" v-text="state.label"></option>
                             </select>
@@ -141,6 +142,18 @@
                         this.updateList();
                     });
                 });
+            },
+            getStateColor(state) {
+                switch (state) {
+                    case "0":
+                        return "background-color: red";
+                    case "1":
+                        return "background-color: orange";
+                    case "2":
+                        return "background-color: green";
+                    default:
+                        return "background-color: red";
+                }
             },
 
             // Actions

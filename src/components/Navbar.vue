@@ -53,7 +53,7 @@
                     <router-link
                         :style="[addActive ? { borderBottom: '3px solid var(--color-primary)' } : { borderBottom: '3px solid transparent' }]"
                         to="/list-bugs/todo"
-                        >À traiter</router-link
+                        >Mes bugs</router-link
                     >
                 </li>
                 <li>
